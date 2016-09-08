@@ -15,8 +15,9 @@ class SplitTreasureSpec extends BaseSpec {
         an[IllegalArgumentException] should be thrownBy splitGems(Seq(1, 2, 3), 0)
       }
 
-      "error if there are more hunters than gems" in {
-        an[IllegalArgumentException] should be thrownBy splitGems(Seq(1, 2, 3), 4)
+      "return nothing if there are more hunters than gems" in {
+        splitGems(Seq(1, 2, 3), 4) shouldBe Seq.empty // Question: Should we continue to have this test even if the condition is no longer present?
+        splitGems(Seq(5, 5, 4), 4) shouldBe Seq.empty
       }
 
       "return nothing if the sum of gem values is not divisible by hunters" in {
