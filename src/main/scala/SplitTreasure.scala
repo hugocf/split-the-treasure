@@ -8,12 +8,7 @@ object SplitTreasure {
 
     if (gs.isEmpty || gs.sum % n != 0 || gs.max > gs.sum / n )
       Seq.empty
-    else if (gs.forall(_ == gs.head)) {
-      if (gs.length % n != 0)
-        Seq.empty
-      else
-        gs.grouped(gs.length / n).toSeq
-    } else {
+    else {
       val y = gs.sum / n
       groupGemsByValue(Seq(Seq.empty), gs.sorted.reverse, Seq.empty, y) match {
         case (Nil, gr) => Seq.empty

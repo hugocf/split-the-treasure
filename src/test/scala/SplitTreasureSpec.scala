@@ -81,16 +81,15 @@ class SplitTreasureSpec extends BaseSpec {
 
     "there are only 2 gems" should {
       "return the 2 gems if the group value is greater or equal to the sum of the gems values and 1 empty set" in {
-        groupGemsByValue(Seq(Seq.empty), Seq(3, 4), Seq.empty, 7) shouldBe (Seq(Seq(3, 4)), Seq.empty)
-        groupGemsByValue(Seq(Seq.empty), Seq(3, 4), Seq.empty, 10) shouldBe (Seq(Seq(3, 4)), Seq.empty)
+        groupGemsByValue(Seq(Seq.empty), Seq(4, 3), Seq.empty, 7) shouldBe (Seq(Seq(4, 3)), Seq.empty)
+        groupGemsByValue(Seq(Seq.empty), Seq(4, 3), Seq.empty, 10) shouldBe (Seq(Seq(4, 3)), Seq.empty)
       }
 
       "return nothing if the group value is less to any gem value and return the remainder set with the initials gems" in {
-        groupGemsByValue(Seq(Seq.empty), Seq(3, 4), Seq.empty, 2) shouldBe (Seq(Seq.empty), Seq(3, 4))
+        groupGemsByValue(Seq(Seq.empty), Seq(4, 3), Seq.empty, 2) shouldBe (Seq(Seq.empty), Seq(4, 3))
       }
 
       "return the gem with the value lower than the group value if in the 2 gems 1 have lower value than the group value and the other has a value greater than the group value independently of the order of the gems, it should also return the remainder set with the gem" in {
-        groupGemsByValue(Seq(Seq.empty), Seq(3, 5), Seq.empty, 4) shouldBe (Seq(Seq(3)), Seq(5))
         groupGemsByValue(Seq(Seq.empty), Seq(5, 3), Seq.empty, 4) shouldBe (Seq(Seq(3)), Seq(5))
       }
     }
@@ -110,7 +109,7 @@ class SplitTreasureSpec extends BaseSpec {
 
       "return the 1st and the 3rd gems with the value equal to the group value and return the remainder set with the gem" in {
         groupGemsByValue(Seq(Seq.empty), Seq(10, 3, 2), Seq.empty, 12) shouldBe (Seq(Seq(3), Seq(10, 2)), Seq.empty)
-        groupGemsByValue(Seq(Seq.empty), Seq(10, 23, 2), Seq.empty, 12) shouldBe (Seq(Seq(10, 2)), Seq(23))
+        groupGemsByValue(Seq(Seq.empty), Seq(23, 10, 2), Seq.empty, 12) shouldBe (Seq(Seq(10, 2)), Seq(23))
       }
     }
 
