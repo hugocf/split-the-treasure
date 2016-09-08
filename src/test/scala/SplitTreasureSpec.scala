@@ -64,6 +64,17 @@ class SplitTreasureSpec extends BaseSpec {
         pending
         splitGems(Seq(3, 5, 2), 2) shouldBe Seq(Seq(3, 2), Seq(5))
       }
+
+      "given examples" in {
+        splitGems(Seq(4, 4, 4), 3) shouldBe Seq(Seq(4), Seq(4), Seq(4))
+        splitGems(Seq(4, 4, 4), 1) shouldBe Seq(Seq(4, 4, 4))
+        splitGems(Seq(4, 4, 4), 2) shouldBe Seq.empty
+        splitGems(Seq(27, 7, 20), 2) shouldBe Seq(Seq(20,7), Seq(27))
+        splitGems(Seq(6, 3, 2, 4, 1), 2) shouldBe Seq(Seq(4,3,1), Seq(6,2))
+        splitGems(Seq(6, 3, 2, 4, 1), 3) shouldBe Seq.empty
+        splitGems(Seq(6, 3, 2, 4, 1), 4) shouldBe Seq.empty
+        splitGems(Seq(3, 2, 7, 7, 14, 5, 3, 4, 9, 2), 4) shouldBe Seq(Seq(4, 3, 3, 2, 2), Seq(7, 7), Seq(9, 5), Seq(14))
+      }
     }
   }
 
