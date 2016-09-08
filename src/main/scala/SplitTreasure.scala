@@ -14,7 +14,17 @@ object SplitTreasure {
       else
         gs.grouped(gs.length / n).toSeq
     } else
-      gs.groupBy()
+      {
+        val y = gs.sum / n
+        gs.sorted.foldLeft(Seq.empty[Seq[Int]]) { (s, v) =>
+          if (s.isEmpty)
+            Seq(Seq(v))
+          else if (s.head.sum + v <= y)
+            (s.head :+ v) +: s.tail
+          else
+            Seq(v) +: s
+        }.reverse
+      }
   }
 
 }
