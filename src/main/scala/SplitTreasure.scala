@@ -15,14 +15,23 @@ object SplitTreasure {
         gs.grouped(gs.length / n).toSeq
     } else {
       val y = gs.sum / n
-      gs.sorted.foldLeft(Seq.empty[Seq[Int]]) { (s, v) =>
-        if (s.isEmpty)
-          Seq(Seq(v))
-        else if (s.head.sum + v <= y)
-          (s.head :+ v) +: s.tail
-        else
-          Seq(v) +: s
-      }.reverse
+      groupGemsByValue(Seq(Seq.empty), gs.sorted.reverse, Seq.empty, y) match {
+        case (Nil, gr) => Seq.empty
+        case (gl, gr) if gr.nonEmpty => Seq.empty
+        case (g :: gl, gr) if g.sum != y => Seq.empty
+        case (gl, gr) => gl
+      }
+    }
+
+  }
+
+  def groupGemsByValue(acc: Seq[Seq[Int]], gs: Seq[Int], gr: Seq[Int], y: Int): (Seq[Seq[Int]], Seq[Int]) = {
+    gs match {
+      case Nil => (acc, gr)
+      case g :: s if acc.head.sum == y => if (g <= y) groupGemsByValue(Seq(g) +: acc, s, gr, y) else groupGemsByValue(acc, s, gr :+ g, y)
+      case g :: s if acc.head.sum + g == y => groupGemsByValue((acc.head :+ g) +: acc.tail, gr ++ s, Seq.empty, y)
+      case g :: s if acc.head.sum + g < y => groupGemsByValue((acc.head :+ g) +: acc.tail, s, gr, y)
+      case g :: s => groupGemsByValue(acc, s, gr :+ g, y)
     }
   }
 
