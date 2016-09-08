@@ -18,6 +18,17 @@ class SplitTreasureSpec extends BaseSpec {
       "error if there are more hunters than gems" in {
         an[IllegalArgumentException] should be thrownBy splitGems(Seq(1, 2, 3), 4)
       }
+
+      "return nothing if the sum of gem values is not divisible by hunters" in {
+        splitGems(Seq(1, 2), 2) shouldBe Seq.empty
+        splitGems(Seq(2, 3, 4), 2) shouldBe Seq.empty
+      }
+
+      "return nothing if the biggest gem value is greater than the gem value per hunter" in {
+        splitGems(Seq(2, 3, 4), 3) shouldBe Seq.empty
+      }
+
+
     }
 
     "there is a single hunter" should {
