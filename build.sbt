@@ -3,8 +3,8 @@ scalaVersion := "2.11.8"
 scalacOptions += "-deprecation"
 
 // Project
-organization := "org.name"
-name := "Project Name"
+organization := "com.example"
+name := "split-the-treasure"
 version := "0.0.1-SNAPSHOT"
 
 // Libraries
