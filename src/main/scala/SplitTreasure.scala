@@ -5,27 +5,27 @@ object SplitTreasure {
       require(n > 0, "must have some hunters, yo!")
     }
 
-    if (gs.isEmpty || gs.sum % n != 0 || gs.max > gs.sum / n )
+    if (gs.isEmpty || gs.sum % n != 0 || gs.max > gs.sum / n)
       Seq.empty
     else {
       val y = gs.sum / n
-      groupGemsByValue(Seq(Seq.empty), gs.sorted.reverse, Seq.empty, y) match {
-        case (Nil, gr) => Seq.empty
-        case (gl, gr) if gr.nonEmpty => Seq.empty
-        case (g :: gl, gr) if g.sum != y => Seq.empty
-        case (gl, gr) => gl
+      gs.foldLeft(Seq(Seq.empty): Seq[Seq[Int]])((acc, g) => splitGemsRec(acc, g, gs, n, y)) match {
+        case acc => if (acc.length == n && acc.head.sum == y) acc.reverse else Seq.empty
       }
-    }
 
+    }
   }
 
-  def groupGemsByValue(acc: Seq[Seq[Int]], gs: Seq[Int], gr: Seq[Int], y: Int): (Seq[Seq[Int]], Seq[Int]) = {
-    gs match {
-      case Nil => (acc, gr)
-      case g :: s if acc.head.sum == y => if (g <= y) groupGemsByValue(Seq(g) +: acc, s, gr, y) else groupGemsByValue(acc, s, gr :+ g, y)
-      case g :: s if acc.head.sum + g == y => groupGemsByValue((acc.head :+ g) +: acc.tail, gr ++ s, Seq.empty, y)
-      case g :: s if acc.head.sum + g < y => groupGemsByValue((acc.head :+ g) +: acc.tail, s, gr, y)
-      case g :: s => groupGemsByValue(acc, s, gr :+ g, y)
+  def splitGemsRec(acc: Seq[Seq[Int]], g: Int, gs: Seq[Int], n: Int, y: Int): Seq[Seq[Int]] = {
+    val s = acc.head.sum
+
+    if (acc.length == n && s == y || s + g > y && s != y)
+      acc
+    else {
+      val gr = gs diff Seq(g)
+      gr.foldLeft(if (s == y) Seq(g) +: acc else (acc.head :+ g) +: acc.tail)((acc, g) => splitGemsRec(acc, g, gr, n, y)) match {
+        case accNew => if (accNew.length == n && accNew.head.sum == y) accNew else acc
+      }
     }
   }
 

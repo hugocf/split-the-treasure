@@ -16,8 +16,7 @@ class SplitTreasureSpec extends BaseSpec {
       }
 
       "return nothing if there are more hunters than gems" in {
-        splitGems(Seq(1, 2, 3), 4) shouldBe Seq.empty // Question: Should we continue to have this test even if the condition is no longer present?
-        splitGems(Seq(5, 5, 4), 4) shouldBe Seq.empty
+        splitGems(Seq(1, 2, 3), 4) shouldBe Seq.empty
       }
 
       "return nothing if the sum of gem values is not divisible by hunters" in {
@@ -35,7 +34,7 @@ class SplitTreasureSpec extends BaseSpec {
     "there is a single hunter" should {
       "give them all the gems" in {
         splitGems(Seq(2), 1) shouldBe Seq(Seq(2))
-        splitGems(Seq(1, 2), 1) shouldBe Seq(Seq(2, 1))
+        splitGems(Seq(1, 2), 1) shouldBe Seq(Seq(1, 2))
       }
     }
 
@@ -61,87 +60,25 @@ class SplitTreasureSpec extends BaseSpec {
       }
 
       "split and respect the order of gems [3, 5, 2] by two hunters as [3, 2] and [5]" in {
-        pending
         splitGems(Seq(3, 5, 2), 2) shouldBe Seq(Seq(3, 2), Seq(5))
       }
 
-      "given examples" in {
+      "pass given examples" in {
         splitGems(Seq(4, 4, 4), 3) shouldBe Seq(Seq(4), Seq(4), Seq(4))
         splitGems(Seq(4, 4, 4), 1) shouldBe Seq(Seq(4, 4, 4))
         splitGems(Seq(4, 4, 4), 2) shouldBe Seq.empty
-        splitGems(Seq(27, 7, 20), 2) shouldBe Seq(Seq(20,7), Seq(27))
-        splitGems(Seq(6, 3, 2, 4, 1), 2) shouldBe Seq(Seq(4,3,1), Seq(6,2))
+        splitGems(Seq(27, 7, 20), 2) shouldBe Seq(Seq(27), Seq(7, 20))
+        splitGems(Seq(27, 7, 20), 3) shouldBe Seq.empty
+        splitGems(Seq(6, 3, 2, 4, 1), 2) shouldBe Seq(Seq(6, 2), Seq(3, 4, 1))
         splitGems(Seq(6, 3, 2, 4, 1), 3) shouldBe Seq.empty
         splitGems(Seq(6, 3, 2, 4, 1), 4) shouldBe Seq.empty
-        splitGems(Seq(3, 2, 7, 7, 14, 5, 3, 4, 9, 2), 4) shouldBe Seq(Seq(4, 3, 3, 2, 2), Seq(7, 7), Seq(9, 5), Seq(14))
+        splitGems(Seq(3, 2, 7, 7, 14, 5, 3, 4, 9, 2), 4) shouldBe Seq(Seq(3, 2, 7, 2), Seq(7, 3, 4), Seq(14), Seq(5, 9))
+      }
+
+      "answer bonus question" in {
+        splitGems(Seq(3, 3, 3, 3, 2, 2, 2, 2, 2, 2, 2, 2), 4) shouldBe Seq(Seq(3, 2, 2), Seq(3, 2, 2), Seq(3, 2, 2), Seq(3, 2, 2))
       }
     }
   }
-
-  "groupGemsByValue" when {
-
-    "there is only 1 gem" should {
-      "return the gem if the group value is greater or equal to the gem value and 1 empty set" in {
-        groupGemsByValue(Seq(Seq.empty), Seq(7), Seq.empty, 7) shouldBe (Seq(Seq(7)), Seq.empty)
-        groupGemsByValue(Seq(Seq.empty), Seq(7), Seq.empty, 10) shouldBe (Seq(Seq(7)), Seq.empty)
-      }
-
-      "return nothing if the group value is less to the gem value and return the remainder set with the initial gem" in {
-        groupGemsByValue(Seq(Seq.empty), Seq(7), Seq.empty, 5) shouldBe (Seq(Seq.empty), Seq(7))
-      }
-    }
-
-    "there are only 2 gems" should {
-      "return the 2 gems if the group value is greater or equal to the sum of the gems values and 1 empty set" in {
-        groupGemsByValue(Seq(Seq.empty), Seq(4, 3), Seq.empty, 7) shouldBe (Seq(Seq(4, 3)), Seq.empty)
-        groupGemsByValue(Seq(Seq.empty), Seq(4, 3), Seq.empty, 10) shouldBe (Seq(Seq(4, 3)), Seq.empty)
-      }
-
-      "return nothing if the group value is less to any gem value and return the remainder set with the initials gems" in {
-        groupGemsByValue(Seq(Seq.empty), Seq(4, 3), Seq.empty, 2) shouldBe (Seq(Seq.empty), Seq(4, 3))
-      }
-
-      "return the gem with the value lower than the group value if in the 2 gems 1 have lower value than the group value and the other has a value greater than the group value independently of the order of the gems, it should also return the remainder set with the gem" in {
-        groupGemsByValue(Seq(Seq.empty), Seq(5, 3), Seq.empty, 4) shouldBe (Seq(Seq(3)), Seq(5))
-      }
-    }
-
-    "there are only 3 gems" should {
-      "return the 3 gems if the group value is greater or equal to the sum of the gems values and 1 empty set" in {
-        groupGemsByValue(Seq(Seq.empty), Seq(4, 3, 3), Seq.empty, 10) shouldBe (Seq(Seq(4, 3, 3)), Seq.empty)
-      }
-
-      "return nothing if the group value is less to any gem value and return the remainder set with the initials gems" in {
-        groupGemsByValue(Seq(Seq.empty), Seq(4, 3, 3), Seq.empty, 2) shouldBe (Seq(Seq.empty), Seq(4, 3, 3))
-      }
-
-      "return the 2 gems with the value lower than the group value if in the 2 gems 2 have lower value than the group value and the other has a value greater than the group value, it should also return the remainder set with the gem" in {
-        groupGemsByValue(Seq(Seq.empty), Seq(10, 3, 2), Seq.empty, 5) shouldBe (Seq(Seq(3, 2)), Seq(10))
-      }
-
-      "return the 1st and the 3rd gems with the value equal to the group value and return the remainder set with the gem" in {
-        groupGemsByValue(Seq(Seq.empty), Seq(10, 3, 2), Seq.empty, 12) shouldBe (Seq(Seq(3), Seq(10, 2)), Seq.empty)
-        groupGemsByValue(Seq(Seq.empty), Seq(23, 10, 2), Seq.empty, 12) shouldBe (Seq(Seq(10, 2)), Seq(23))
-      }
-    }
-
-    "there are several gems" should {
-      "return all the gems if the group value is greater or equal to the sum of the gems values and 1 empty set" in {
-        groupGemsByValue(Seq(Seq.empty), Seq(4, 3, 3, 2), Seq.empty, 12) shouldBe (Seq(Seq(4, 3, 3, 2)), Seq.empty)
-        groupGemsByValue(Seq(Seq.empty), Seq(4, 3, 3, 2), Seq.empty, 14) shouldBe (Seq(Seq(4, 3, 3, 2)), Seq.empty)
-      }
-
-      "return nothing if the group value is less to any gem value and return the remainder set with the initials gems" in {
-        groupGemsByValue(Seq(Seq.empty), Seq(10, 4, 3, 3), Seq.empty, 2) shouldBe (Seq(Seq.empty), Seq(10, 4, 3, 3))
-      }
-
-      "return the initial gems that sum up to the group value and return the unused gem on the remainder set" in {
-        groupGemsByValue(Seq(Seq.empty), Seq(10, 3, 2), Seq.empty, 12) shouldBe (Seq(Seq(3), Seq(10, 2)), Seq.empty)
-      }
-
-    }
-
-  }
-
 }
 
