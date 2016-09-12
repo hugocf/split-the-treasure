@@ -23,7 +23,8 @@ class SplitTreasureSpec extends BaseSpec {
     "there is a single hunter" should {
       "give them all the gems" in {
         splitGems(Seq(2), 1) shouldBe Seq(Seq(2))
-        pendingUntilFixed { // waiting for ordering to be implemented
+        pendingUntilFixed {
+          // waiting for gem ordering to be implemented
           splitGems(Seq(1, 2), 1) shouldBe Seq(Seq(1, 2))
         }
       }
@@ -55,7 +56,29 @@ class SplitTreasureSpec extends BaseSpec {
       }
 
       "split [1, 1, 2] by two hunters as [1, 1] and [2]" in {
-        splitGems(Seq(1, 1, 2), 2) shouldBe Seq(Seq(2), Seq(1, 1))
+        splitGems(Seq(1, 1, 2), 2) shouldBe Seq(Seq(1, 1), Seq(2))
+      }
+
+      "pass given examples" in {
+        splitGems(Seq(4, 4, 4), 1) shouldBe Seq(Seq(4, 4, 4))
+        splitGems(Seq(4, 4, 4), 2) shouldBe Seq.empty
+        splitGems(Seq(4, 4, 4), 3) shouldBe Seq(Seq(4), Seq(4), Seq(4))
+        splitGems(Seq(27, 7, 20), 3) shouldBe Seq.empty
+        splitGems(Seq(6, 3, 2, 4, 1), 3) shouldBe Seq.empty
+        splitGems(Seq(6, 3, 2, 4, 1), 4) shouldBe Seq.empty
+      }
+
+      "pass given examples [pending]" in {
+        pendingUntilFixed {
+          // waiting for gem ordering to be implemented
+          splitGems(Seq(27, 7, 20), 2) shouldBe Seq(Seq(27), Seq(7, 20))
+          splitGems(Seq(6, 3, 2, 4, 1), 2) shouldBe Seq(Seq(6, 2), Seq(3, 4, 1))
+          splitGems(Seq(3, 2, 7, 7, 14, 5, 3, 4, 9, 2), 4) shouldBe Seq(Seq(3, 2, 7, 2), Seq(7, 3, 4), Seq(14), Seq(5, 9))
+        }
+      }
+
+      "answer bonus question" in {
+        splitGems(Seq(3, 3, 3, 3, 2, 2, 2, 2, 2, 2, 2, 2), 4) shouldBe Seq(Seq(3, 2, 2), Seq(3, 2, 2), Seq(3, 2, 2), Seq(3, 2, 2))
       }
     }
   }
