@@ -48,6 +48,10 @@ class SplitTreasureSpec extends BaseSpec {
         splitGems(Seq(1, 2), 2) shouldBe Seq.empty
       }
 
+      "not split if there is a gem with value too big" in {
+        splitGems(Seq(3, 7), 2) shouldBe Seq.empty
+      }
+
       "split [1, 1, 2] by two hunters as [1, 1] and [2]" in {
         pending
         splitGems(Seq(1, 1, 2), 2) shouldBe Seq(Seq(1, 1), Seq(2))
