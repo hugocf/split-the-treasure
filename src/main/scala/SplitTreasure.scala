@@ -6,15 +6,10 @@ object SplitTreasure {
       require(n <= gs.length, "eeeei… too many hunters, bro!")
     }
 
-    if (gs.isEmpty)
+    if (gs.isEmpty || gs.length % n != 0)
       Seq.empty
-    else if (gs.forall(_ == gs.head)) {
-      if (gs.length % n != 0)
-        Seq.empty
-      else
-        gs.grouped(gs.length / n).toSeq
-    } else
-      gs.groupBy()
+    else
+      gs.grouped(gs.length / n).toSeq
   }
 
 }

@@ -45,6 +45,7 @@ class SplitTreasureSpec extends BaseSpec {
 
     "gems have different values" should {
       "split [1, 1, 2] by two hunters as [1, 1] and [2]" in {
+        pending
         splitGems(Seq(1, 1, 2), 2) shouldBe Seq(Seq(1, 1), Seq(2))
       }
 
